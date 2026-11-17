@@ -1,0 +1,106 @@
+<!DOCTYPE html>
+<html lang="pt">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>Fornecedores — Yoha Eventos</title>
+  <meta name="description" content="Diretório de fornecedores para eventos em Angola: espaços, fotografia, catering, decoração e muito mais.">
+  <meta name="theme-color" content="#4A0A14">
+  <link rel="icon" href="assets/img/favicon.png">
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Cinzel:wght@500;600&family=Inter:wght@400;500;600;700;800&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="css/styles.css">
+</head>
+<body>
+  <div id="site-cabecalho"></div>
+
+  <main>
+    <section class="cabecalho-pagina">
+      <div class="container">
+        <nav class="migalhas" aria-label="Navegação estrutural"><a href="index.html">Início</a><span>/</span><span>Fornecedores</span></nav>
+        <h1 class="h2" id="titulo-pagina">Fornecedores</h1>
+        <p class="lead">Compare profissionais por categoria, província e preço. Peça orçamentos sem compromisso.</p>
+      </div>
+    </section>
+
+    <div class="container diretorio">
+      <aside class="filtros" id="filtros" aria-label="Filtros">
+        <div class="filtros__fechar">
+          <strong>Filtros</strong>
+          <button class="btn btn--linha btn--sm" type="button" data-fechar-filtros>Fechar</button>
+        </div>
+
+        <div class="filtro">
+          <label class="campo">
+            <span>Pesquisar</span>
+            <input class="entrada" type="search" id="f-texto" placeholder="Nome ou serviço">
+          </label>
+        </div>
+
+        <div class="filtro">
+          <span class="filtro__titulo">Categoria</span>
+          <div id="f-categorias"></div>
+        </div>
+
+        <div class="filtro">
+          <label class="campo">
+            <span>Província</span>
+            <select class="entrada" id="f-provincia"><option value="">Todas</option></select>
+          </label>
+        </div>
+
+        <div class="filtro">
+          <label class="campo">
+            <span>Nº de convidados</span>
+            <input class="entrada" type="number" min="1" id="f-convidados" placeholder="Ex.: 200">
+          </label>
+        </div>
+
+        <div class="filtro">
+          <label class="campo">
+            <span>Preço até</span>
+            <select class="entrada" id="f-preco">
+              <option value="">Sem limite</option>
+              <option value="100000">100 000 Kz</option>
+              <option value="250000">250 000 Kz</option>
+              <option value="500000">500 000 Kz</option>
+              <option value="1000000">1 000 000 Kz</option>
+            </select>
+          </label>
+        </div>
+
+        <div class="filtro">
+          <label class="opcao"><input class="caixa" type="checkbox" id="f-verificado"> Apenas verificados</label>
+        </div>
+
+        <div class="filtro" style="border: 0">
+          <button class="btn btn--linha btn--sm btn--block" type="button" id="f-limpar">Limpar filtros</button>
+        </div>
+      </aside>
+
+      <section aria-live="polite">
+        <div class="diretorio__barra">
+          <p><strong id="total">0</strong> fornecedores encontrados</p>
+          <div style="display:flex; gap:12px; flex-wrap:wrap">
+            <button class="btn btn--linha btn--sm btn-filtros" type="button" data-abrir-filtros>Filtros</button>
+            <select class="entrada" id="ordenar" aria-label="Ordenar">
+              <option value="destaque">Em destaque</option>
+              <option value="preco-asc">Preço: mais baixo</option>
+              <option value="preco-desc">Preço: mais alto</option>
+              <option value="nome">Nome (A–Z)</option>
+            </select>
+          </div>
+        </div>
+        <div class="grelha-fornecedores" id="resultados"></div>
+      </section>
+    </div>
+  </main>
+
+  <div id="site-rodape"></div>
+
+  <script src="js/data.js"></script>
+  <script src="js/main.js"></script>
+  <script src="js/fornecedores.js"></script>
+</body>
+</html>

@@ -1,0 +1,91 @@
+<!DOCTYPE html>
+<html lang="pt">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>Contacto — Yoha Eventos</title>
+  <meta name="description" content="Fale com a equipa Yoha Eventos.">
+  <meta name="theme-color" content="#4A0A14">
+  <link rel="icon" href="assets/img/favicon.png">
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Cinzel:wght@500;600&family=Inter:wght@400;500;600;700;800&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="css/styles.css">
+  <style>
+    .contacto { display: grid; grid-template-columns: minmax(0, 1fr) minmax(0, 1.4fr); gap: 28px; align-items: start; }
+    .contacto__info { display: grid; gap: 12px; }
+    .contacto__item { display: flex; gap: 14px; align-items: center; padding: 18px; border: 1px solid var(--linha); border-radius: var(--raio); background: #fff; }
+    a.contacto__item:hover { border-color: var(--bordo-800); }
+    .contacto__item strong { display: block; }
+    .contacto__item span { color: var(--cinza); font-size: 0.92rem; }
+    .ic { width: 44px; height: 44px; border-radius: 12px; display: grid; place-items: center; background: var(--bordo-50); color: var(--bordo-700); flex-shrink: 0; }
+    .ic svg { width: 22px; height: 22px; }
+    .ic--whats { background: #E8F5EE; color: var(--whatsapp); }
+    .contacto__form { display: grid; gap: 14px; }
+    .contacto__form .linha2 { display: grid; grid-template-columns: 1fr 1fr; gap: 12px; }
+    @media (max-width: 860px) { .contacto { grid-template-columns: 1fr; } }
+    @media (max-width: 520px) { .contacto__form .linha2 { grid-template-columns: 1fr; } }
+  </style>
+</head>
+<body>
+  <div id="site-cabecalho"></div>
+
+  <main>
+    <section class="cabecalho-pagina">
+      <div class="container">
+        <nav class="migalhas" aria-label="Navegação estrutural"><a href="index.html">Início</a><span>/</span><span>Contacto</span></nav>
+        <h1 class="h2">Fale connosco</h1>
+        <p class="lead">Tem dúvidas, sugestões ou quer anunciar a sua empresa? Respondemos em até um dia útil.</p>
+      </div>
+    </section>
+    <section class="seccao">
+      <div class="container contacto">
+        <div class="contacto__info">
+          <a class="contacto__item" href="https://wa.me/244900000000" target="_blank" rel="noopener"><span class="ic ic--whats" id="ic-whats"></span><div><strong>WhatsApp</strong><span>+244 900 000 000</span></div></a>
+          <a class="contacto__item" href="tel:+244900000000"><span class="ic" id="ic-tel"></span><div><strong>Telefone</strong><span>+244 900 000 000</span></div></a>
+          <a class="contacto__item" href="mailto:geral@yohaeventos.ao"><span class="ic" id="ic-mail"></span><div><strong>Email</strong><span>geral@yohaeventos.ao</span></div></a>
+          <div class="contacto__item"><span class="ic" id="ic-local"></span><div><strong>Morada</strong><span>Luanda, Angola</span></div></div>
+        </div>
+        <form class="caixa-branca contacto__form" id="form-contacto" novalidate>
+          <h2 class="h3">Envie-nos uma mensagem</h2>
+          <div class="linha2">
+            <label class="campo"><span>Nome</span><input class="entrada" name="nome" required autocomplete="name"></label>
+            <label class="campo"><span>Telefone</span><input class="entrada" type="tel" name="telefone" autocomplete="tel" placeholder="+244"></label>
+          </div>
+          <label class="campo"><span>Email</span><input class="entrada" type="email" name="email" required autocomplete="email"></label>
+          <label class="campo"><span>Assunto</span>
+            <select class="entrada" name="assunto"><option>Quero organizar um evento</option><option>Sou fornecedor</option><option>Parcerias</option><option>Outro assunto</option></select>
+          </label>
+          <label class="campo"><span>Mensagem</span><textarea class="entrada" name="mensagem" required></textarea></label>
+          <button class="btn" type="submit">Enviar mensagem</button>
+        </form>
+      </div>
+    </section>
+  </main>
+
+  <div id="site-rodape"></div>
+
+  <script src="js/data.js"></script>
+  <script src="js/main.js"></script>
+  <script>
+    document.addEventListener("DOMContentLoaded", () => {
+      const mail = '<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8"><rect x="3" y="5" width="18" height="14" rx="2.5"/><path d="M3.5 6.5l8.5 6.5 8.5-6.5"/></svg>';
+      const tel = '<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8"><path d="M5 3.5h3.5l1.8 4.5-2.3 1.4a11 11 0 0 0 6.6 6.6l1.4-2.3 4.5 1.8V19a2 2 0 0 1-2 2A16.5 16.5 0 0 1 3 5.5a2 2 0 0 1 2-2z"/></svg>';
+      document.getElementById("ic-whats").innerHTML = ICONES.whatsapp;
+      document.getElementById("ic-tel").innerHTML = tel;
+      document.getElementById("ic-mail").innerHTML = mail;
+      document.getElementById("ic-local").innerHTML = ICONES.local;
+      document.getElementById("form-contacto").addEventListener("submit", (e) => {
+        e.preventDefault();
+        const d = Object.fromEntries(new FormData(e.target));
+        if (!d.nome.trim() || !d.email.trim() || !d.mensagem.trim()) return mostrarAviso("Preencha o nome, o email e a mensagem.");
+        const msgs = JSON.parse(localStorage.getItem("yoha_mensagens") || "[]");
+        msgs.push({ ...d, criadoEm: new Date().toISOString() });
+        localStorage.setItem("yoha_mensagens", JSON.stringify(msgs));
+        e.target.reset();
+        mostrarAviso("Mensagem enviada. Obrigado pelo contacto!");
+      });
+    });
+  </script>
+</body>
+</html>

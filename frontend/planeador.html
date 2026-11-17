@@ -1,0 +1,242 @@
+<!DOCTYPE html>
+<html lang="pt">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>Planeador — Yoha Eventos</title>
+  <meta name="description" content="Faça a gestão do seu evento: checklist, orçamento, convidados e fornecedores.">
+  <meta name="theme-color" content="#4A0A14">
+  <link rel="icon" href="assets/img/favicon.png">
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Cinzel:wght@500;600&family=Inter:wght@400;500;600;700;800&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="css/styles.css">
+  <link rel="stylesheet" href="css/painel.css">
+  <script>
+    // Página privada: sem sessão iniciada, vai para o login
+    try { if (!localStorage.getItem("yoha_utilizador")) location.replace("entrar.html?voltar=" + encodeURIComponent(location.pathname.split("/").pop() + location.search + location.hash)); } catch (e) {}
+  </script>
+</head>
+<body class="painel-body">
+  <div id="site-cabecalho"></div>
+
+  <main id="app">
+    <!-- ============ CRIAR EVENTO ============ -->
+    <section class="criar" id="ecra-criar" hidden>
+      <div class="criar__lado on-dark">
+        <div style="position: relative">
+          <span class="eyebrow">Planeador Yoha</span>
+          <h1 class="h2" style="color:#fff">Crie o seu evento</h1>
+          <p class="lead" style="margin-top: 22px">Com estes dados preparamos a sua checklist, a estrutura do orçamento e o painel do evento.</p>
+        </div>
+        <ol>
+          <li>Checklist com prazos calculados a partir da data</li>
+          <li>Orçamento distribuído por categoria</li>
+          <li>Lista de convidados com confirmações</li>
+          <li>Gestão dos fornecedores contratados</li>
+        </ol>
+      </div>
+      <div class="criar__form">
+        <span class="eyebrow" id="criar-etiqueta">Novo evento</span>
+        <h2 class="h2" id="criar-titulo">Detalhes do evento</h2>
+        <form id="form-evento">
+          <label class="campo inteiro"><span>Nome do evento</span><input class="entrada" name="nome" required placeholder="Ex.: Casamento da Ana & Paulo"></label>
+          <label class="campo"><span>Tipo de evento</span><select class="entrada" name="tipo" id="ev-tipo"></select></label>
+          <label class="campo"><span>Data</span><input class="entrada" type="date" name="data" required></label>
+          <label class="campo"><span>Província</span><select class="entrada" name="provincia" id="ev-provincia"></select></label>
+          <label class="campo"><span>Local</span><input class="entrada" name="local" placeholder="A definir"></label>
+          <label class="campo"><span>Nº de convidados</span><input class="entrada" type="number" min="1" name="convidados" value="150"></label>
+          <label class="campo"><span>Orçamento total (Kz)</span><input class="entrada" type="number" min="0" step="1000" name="orcamento" value="5000000"></label>
+          <div class="inteiro" style="display: flex; gap: 12px; flex-wrap: wrap; margin-top: 10px">
+            <button class="btn" type="submit" data-seta>Criar painel</button>
+            <button class="btn btn--linha" type="button" id="cancelar-edicao" hidden>Cancelar</button>
+          </div>
+        </form>
+      </div>
+    </section>
+
+    <!-- ============ PAINEL ============ -->
+    <section class="painel" id="ecra-painel" hidden>
+      <aside class="painel__menu">
+        <div class="painel__evento">
+          <small id="m-tipo"></small>
+          <h2 id="m-nome"></h2>
+          <p id="m-data"></p>
+        </div>
+        <nav class="painel__tabs" aria-label="Secções do planeador">
+          <a href="#geral" data-vista="geral">Visão geral</a>
+          <a href="#checklist" data-vista="checklist">Checklist <em id="c-tarefas"></em></a>
+          <a href="#orcamento" data-vista="orcamento">Orçamento</a>
+          <a href="#convidados" data-vista="convidados">Convidados <em id="c-convidados"></em></a>
+          <a href="#mesas" data-vista="mesas">Mesas <em id="c-mesas"></em></a>
+          <a href="#fornecedores" data-vista="fornecedores">Fornecedores <em id="c-fornecedores"></em></a>
+        </nav>
+        <div class="painel__menu-base">
+          <button type="button" id="editar-evento">Editar detalhes do evento</button>
+          <button type="button" id="exportar">Exportar dados (JSON)</button>
+          <button type="button" id="apagar-evento">Apagar evento</button>
+        </div>
+      </aside>
+
+      <div class="painel__conteudo">
+
+        <!-- VISÃO GERAL -->
+        <div class="vista" id="vista-geral">
+          <div class="contagem">
+                <div class="contagem__dias" id="g-dias">0</div>
+            <div class="contagem__texto">
+              <small id="g-dias-rotulo">dias para o grande dia</small>
+              <h2 id="g-nome"></h2>
+              <p id="g-detalhes"></p>
+            </div>
+          </div>
+
+          <div class="indicadores">
+            <div class="indicador"><span>Tarefas concluídas</span><strong id="g-tarefas"></strong><div class="barra"><i id="g-tarefas-barra"></i></div></div>
+            <div class="indicador"><span>Orçamento usado</span><strong id="g-orc"></strong><small id="g-orc-sub"></small><div class="barra" id="g-orc-barra-wrap"><i id="g-orc-barra"></i></div></div>
+            <div class="indicador"><span>Confirmados</span><strong id="g-conv"></strong><small id="g-conv-sub"></small></div>
+            <div class="indicador"><span>Fornecedores</span><strong id="g-forn"></strong><small id="g-forn-sub"></small></div>
+          </div>
+
+          <div class="duas-col">
+            <div class="bloco">
+              <div class="bloco__titulo"><h3>Próximas tarefas</h3><a href="#checklist">Ver todas</a></div>
+              <ul class="lista-simples" id="g-proximas"></ul>
+            </div>
+            <div class="bloco">
+              <div class="bloco__titulo"><h3>Pagamentos pendentes</h3><a href="#fornecedores">Ver todos</a></div>
+              <ul class="lista-simples" id="g-pagamentos"></ul>
+            </div>
+          </div>
+        </div>
+
+        <!-- CHECKLIST -->
+        <div class="vista" id="vista-checklist">
+          <div class="vista__topo">
+            <div><span class="eyebrow">Gestão</span><h1>Checklist</h1></div>
+            <div class="filtro-chips" id="chk-filtros">
+              <button class="chip activo" data-f="todas">Todas</button>
+              <button class="chip" data-f="pendentes">Pendentes</button>
+              <button class="chip" data-f="feitas">Concluídas</button>
+            </div>
+          </div>
+          <form class="formulario-linha" id="form-tarefa" style="grid-template-columns: 2fr 1fr auto">
+            <label class="campo"><span>Nova tarefa</span><input class="entrada" name="titulo" required placeholder="Ex.: Escolher as flores da mesa principal"></label>
+            <label class="campo"><span>Prazo</span><input class="entrada" type="date" name="prazo"></label>
+            <button class="btn" type="submit">Adicionar</button>
+          </form>
+          <div id="chk-lista"></div>
+        </div>
+
+        <!-- ORÇAMENTO -->
+        <div class="vista" id="vista-orcamento">
+          <div class="vista__topo">
+            <div><span class="eyebrow">Gestão</span><h1>Orçamento</h1></div>
+            <label class="campo" style="min-width: 240px"><span>Orçamento total (Kz)</span><input class="entrada" type="number" min="0" step="1000" id="orc-total"></label>
+          </div>
+          <div class="indicadores" style="margin-top: 0">
+            <div class="indicador"><span>Total</span><strong id="o-total"></strong></div>
+            <div class="indicador"><span>Previsto</span><strong id="o-previsto"></strong><div class="barra"><i id="o-previsto-barra"></i></div></div>
+            <div class="indicador"><span>Pago</span><strong id="o-pago"></strong></div>
+            <div class="indicador"><span>Disponível</span><strong id="o-saldo"></strong></div>
+          </div>
+          <form class="formulario-linha" id="form-despesa" style="grid-template-columns: 1fr 1.4fr 1fr auto">
+            <label class="campo"><span>Categoria</span><select class="entrada" name="categoria" id="desp-cat"></select></label>
+            <label class="campo"><span>Descrição</span><input class="entrada" name="descricao" required placeholder="Ex.: Sinal do espaço"></label>
+            <label class="campo"><span>Valor previsto</span><input class="entrada" type="number" min="0" step="1000" name="previsto" required></label>
+            <button class="btn" type="submit">Adicionar</button>
+          </form>
+          <div class="tabela-wrap">
+            <table class="tabela">
+              <thead><tr><th>Categoria</th><th>Descrição</th><th class="num">Previsto (Kz)</th><th class="num">Pago (Kz)</th><th class="num">Em falta</th><th></th></tr></thead>
+              <tbody id="orc-linhas"></tbody>
+              <tfoot><tr><td colspan="2">Total</td><td class="num" id="orc-t-prev"></td><td class="num" id="orc-t-pago"></td><td class="num" id="orc-t-falta"></td><td></td></tr></tfoot>
+            </table>
+          </div>
+        </div>
+
+        <!-- CONVIDADOS -->
+        <div class="vista" id="vista-convidados">
+          <div class="vista__topo">
+            <div><span class="eyebrow">Gestão</span><h1>Convidados</h1></div>
+            <div style="display: flex; gap: 10px; flex-wrap: wrap">
+              <input class="entrada" type="search" id="conv-pesquisa" placeholder="Pesquisar convidado" style="height: 42px; width: 220px">
+              <button class="btn btn--linha btn--sm" type="button" id="conv-csv">Exportar CSV</button>
+            </div>
+          </div>
+          <div class="indicadores" style="margin-top: 0">
+            <div class="indicador"><span>Total</span><strong id="cv-total"></strong></div>
+            <div class="indicador"><span>Confirmados</span><strong id="cv-conf"></strong></div>
+            <div class="indicador"><span>Pendentes</span><strong id="cv-pend"></strong></div>
+            <div class="indicador"><span>Não vêm</span><strong id="cv-nao"></strong></div>
+          </div>
+          <form class="formulario-linha" id="form-convidado" style="grid-template-columns: 1.5fr 1fr 1fr 0.8fr auto">
+            <label class="campo"><span>Nome</span><input class="entrada" name="nome" required></label>
+            <label class="campo"><span>Telefone</span><input class="entrada" type="tel" name="telefone"></label>
+            <label class="campo"><span>Grupo</span>
+              <select class="entrada" name="grupo"><option>Família</option><option>Amigos</option><option>Trabalho</option><option>Outros</option></select>
+            </label>
+            <label class="campo"><span>Acomp.</span><input class="entrada" type="number" min="0" name="acompanhantes" value="0"></label>
+            <button class="btn" type="submit">Adicionar</button>
+          </form>
+          <div class="tabela-wrap">
+            <table class="tabela">
+              <thead><tr><th>Nome</th><th>Telefone</th><th>Grupo</th><th>Acomp.</th><th>Presença</th><th>Mesa</th><th>Restrições</th><th></th></tr></thead>
+              <tbody id="conv-linhas"></tbody>
+            </table>
+          </div>
+        </div>
+
+        <!-- MESAS -->
+        <div class="vista" id="vista-mesas">
+          <div class="vista__topo">
+            <div><span class="eyebrow">Gestão</span><h1>Planta de mesas</h1></div>
+            <p class="muted small" id="mesas-resumo" style="margin:0"></p>
+          </div>
+          <form class="formulario-linha" id="form-mesa" style="grid-template-columns: 1.5fr 1fr auto auto">
+            <label class="campo"><span>Nome da mesa</span><input class="entrada" name="nome" required placeholder="Ex.: Mesa 1 ou Mesa dos Noivos"></label>
+            <label class="campo"><span>Lugares</span><input class="entrada" type="number" min="1" name="lugares" value="10"></label>
+            <button class="btn" type="submit">Adicionar mesa</button>
+            <button class="btn btn--linha" type="button" id="mesas-auto" title="Cria mesas suficientes para os convidados">Criar automaticamente</button>
+          </form>
+          <div class="mesas-layout">
+            <div class="grelha-mesas" id="grelha-mesas"></div>
+            <aside class="bloco sem-mesa">
+              <div class="bloco__titulo"><h3>Sem mesa</h3><span class="muted small" id="sem-mesa-n"></span></div>
+              <ul class="lista-simples" id="sem-mesa"></ul>
+            </aside>
+          </div>
+        </div>
+
+        <!-- FORNECEDORES -->
+        <div class="vista" id="vista-fornecedores">
+          <div class="vista__topo">
+            <div><span class="eyebrow">Gestão</span><h1>Fornecedores contratados</h1></div>
+            <a class="btn btn--linha btn--sm" href="fornecedores.html">Procurar no diretório</a>
+          </div>
+          <form class="formulario-linha" id="form-fornecedor" style="grid-template-columns: 1.3fr 1fr 1fr 1fr auto">
+            <label class="campo"><span>Nome</span><input class="entrada" name="nome" required></label>
+            <label class="campo"><span>Categoria</span><select class="entrada" name="categoria" id="forn-cat"></select></label>
+            <label class="campo"><span>Contacto</span><input class="entrada" name="contacto"></label>
+            <label class="campo"><span>Valor acordado</span><input class="entrada" type="number" min="0" step="1000" name="valor"></label>
+            <button class="btn" type="submit">Adicionar</button>
+          </form>
+          <div class="tabela-wrap">
+            <table class="tabela">
+              <thead><tr><th>Fornecedor</th><th>Categoria</th><th>Contacto</th><th>Estado</th><th class="num">Valor (Kz)</th><th class="num">Pago (Kz)</th><th></th></tr></thead>
+              <tbody id="forn-linhas"></tbody>
+            </table>
+          </div>
+        </div>
+
+      </div>
+    </section>
+  </main>
+
+  <div id="site-rodape"></div>
+
+  <script src="js/data.js"></script>
+  <script src="js/main.js"></script>
+  <script src="js/planeador.js"></script>
+</body>
+</html>

@@ -1,0 +1,114 @@
+<!DOCTYPE html>
+<html lang="pt">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>Calculadora de Orçamento — Yoha Eventos</title>
+  <meta name="description" content="Calcule quanto custa o seu evento em Angola e veja a distribuição do orçamento por categoria.">
+  <meta name="theme-color" content="#4A0A14">
+  <link rel="icon" href="assets/img/favicon.png">
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Cinzel:wght@500;600&family=Inter:wght@400;500;600;700;800&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="css/styles.css">
+  <style>
+    .calc { display: grid; grid-template-columns: 400px minmax(0, 1fr); gap: 28px; padding: 32px 0 96px; align-items: start; }
+    .calc__form { position: sticky; top: calc(var(--header-h) + 20px); display: grid; gap: 16px; }
+    .modos { display: grid; grid-template-columns: 1fr 1fr; background: var(--marfim); border-radius: 999px; padding: 4px; }
+    .modos label { text-align: center; padding: 9px 10px; border-radius: 999px; font-size: 0.9rem; font-weight: 600; color: var(--tinta-2); cursor: pointer; }
+    .modos input { position: absolute; opacity: 0; pointer-events: none; }
+    .modos label:has(input:checked) { background: #fff; color: var(--bordo-800); box-shadow: var(--sombra); }
+    .niveis { display: grid; grid-template-columns: repeat(3, 1fr); gap: 8px; }
+    .niveis label { border: 1px solid var(--linha); border-radius: var(--raio-sm); padding: 10px; text-align: center; cursor: pointer; font-size: 0.875rem; }
+    .niveis label strong { display: block; font-size: 0.95rem; }
+    .niveis input { position: absolute; opacity: 0; pointer-events: none; }
+    .niveis label:has(input:checked) { border-color: var(--bordo-800); background: var(--bordo-50); color: var(--bordo-800); }
+    .resumo { display: grid; grid-template-columns: repeat(3, minmax(0, 1fr)); gap: 12px; margin-bottom: 20px; }
+    .resumo div { padding: 18px; border-radius: var(--raio); background: var(--marfim); }
+    .resumo div:first-child { background: var(--bordo-800); color: #fff; }
+    .resumo span { display: block; font-size: 0.85rem; opacity: .75; }
+    .resumo strong { display: block; font-size: 1.5rem; font-weight: 800; letter-spacing: -0.02em; margin-top: 4px; overflow-wrap: anywhere; }
+    .resumo div:first-child strong { color: var(--ouro-400); }
+    .linha-cat { display: grid; grid-template-columns: 44px minmax(0, 1fr) auto; gap: 14px; align-items: center; padding: 14px 0; border-bottom: 1px solid var(--linha); }
+    .linha-cat:last-child { border-bottom: 0; }
+    .linha-cat__icone { width: 44px; height: 44px; border-radius: 12px; display: grid; place-items: center; background: var(--bordo-50); color: var(--bordo-700); }
+    .linha-cat__icone svg { width: 22px; height: 22px; }
+    .linha-cat__nome { display: flex; justify-content: space-between; gap: 10px; font-weight: 600; font-size: 0.95rem; }
+    .linha-cat__nome span { color: var(--cinza); font-weight: 500; }
+    .barra-calc { height: 6px; border-radius: 6px; background: var(--marfim); margin-top: 8px; overflow: hidden; }
+    .barra-calc i { display: block; height: 100%; background: var(--bordo-700); border-radius: 6px; transition: width .5s var(--ease); }
+    .linha-cat__valor { text-align: right; }
+    .linha-cat__valor strong { display: block; white-space: nowrap; }
+    .linha-cat__valor a { font-size: 0.8rem; color: var(--bordo-700); font-weight: 600; }
+    .calc__accoes { display: flex; flex-wrap: wrap; gap: 10px; margin-top: 20px; }
+    @media (max-width: 400px) { .niveis { grid-template-columns: repeat(3, minmax(0, 1fr)); gap: 6px; } .niveis label { padding: 8px 4px; font-size: 0.75rem; } .modos label { font-size: 0.8rem; padding: 8px 4px; } }
+    @media (max-width: 960px) { .calc { grid-template-columns: minmax(0, 1fr); } .calc__form { position: static; } }
+    @media (max-width: 560px) { .resumo { grid-template-columns: 1fr; } .linha-cat { grid-template-columns: 36px minmax(0, 1fr); } .linha-cat__icone { width: 36px; height: 36px; } .linha-cat__valor { grid-column: 2; text-align: left; } }
+  </style>
+  <script>
+    // Página privada: sem sessão iniciada, vai para o login
+    try { if (!localStorage.getItem("yoha_utilizador")) location.replace("entrar.html?voltar=" + encodeURIComponent(location.pathname.split("/").pop() + location.search + location.hash)); } catch (e) {}
+  </script>
+</head>
+<body>
+  <div id="site-cabecalho"></div>
+
+  <main>
+    <section class="cabecalho-pagina">
+      <div class="container">
+        <nav class="migalhas" aria-label="Navegação estrutural"><a href="index.html">Início</a><span>/</span><span>Calculadora de orçamento</span></nav>
+        <h1 class="h2">Calculadora de orçamento</h1>
+        <p class="lead">Saiba quanto pode custar o seu evento e como distribuir o orçamento por categoria. Valores indicativos para o mercado angolano.</p>
+      </div>
+    </section>
+
+    <div class="container calc">
+      <form class="calc__form caixa-branca" id="form-calc">
+        <div class="modos" role="radiogroup" aria-label="Modo de cálculo">
+          <label><input type="radio" name="modo" value="estimar" checked> Estimar custo</label>
+          <label><input type="radio" name="modo" value="distribuir"> Tenho um valor</label>
+        </div>
+
+        <label class="campo"><span>Tipo de evento</span><select class="entrada" name="tipo" id="c-tipo"></select></label>
+        <label class="campo"><span>Número de convidados</span><input class="entrada" type="number" min="1" name="convidados" value="150"></label>
+        <label class="campo"><span>Província</span><select class="entrada" name="provincia" id="c-provincia"></select></label>
+
+        <div class="campo" id="bloco-nivel">
+          <span>Nível do evento</span>
+          <div class="niveis">
+            <label><input type="radio" name="nivel" value="economico"><strong>Simples</strong>Económico</label>
+            <label><input type="radio" name="nivel" value="medio" checked><strong>Médio</strong>Equilibrado</label>
+            <label><input type="radio" name="nivel" value="premium"><strong>Premium</strong>Requintado</label>
+          </div>
+        </div>
+
+        <label class="campo" id="bloco-valor" hidden><span>Orçamento disponível (Kz)</span><input class="entrada" type="number" min="0" step="50000" name="valor" value="2000000"></label>
+      </form>
+
+      <section aria-live="polite">
+        <div class="resumo">
+          <div><span id="r-rotulo">Custo estimado</span><strong id="r-total">—</strong></div>
+          <div><span>Por convidado</span><strong id="r-pessoa">—</strong></div>
+          <div><span>Convidados</span><strong id="r-conv">—</strong></div>
+        </div>
+        <div class="caixa-branca">
+          <h2 class="h3" style="margin-bottom: 6px">Distribuição por categoria</h2>
+          <p class="muted small" style="margin: 0 0 6px">Percentagens de referência para este tipo de evento.</p>
+          <div id="r-linhas"></div>
+        </div>
+        <div class="calc__accoes">
+          <button class="btn" type="button" id="guardar-plano">Usar no meu planeador</button>
+          <a class="btn btn--linha" href="fornecedores.html" id="ver-forn">Ver fornecedores</a>
+        </div>
+        <p class="muted small" style="margin-top: 16px">Estes valores são uma estimativa. Peça orçamentos aos fornecedores para obter preços exactos para a sua data.</p>
+      </section>
+    </div>
+  </main>
+
+  <div id="site-rodape"></div>
+
+  <script src="js/data.js"></script>
+  <script src="js/main.js"></script>
+  <script src="js/calculadora.js"></script>
+</body>
+</html>

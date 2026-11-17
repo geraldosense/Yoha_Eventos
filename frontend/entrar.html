@@ -1,0 +1,82 @@
+<!DOCTYPE html>
+<html lang="pt">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>Entrar — Yoha Eventos</title>
+  <meta name="description" content="Entre na sua conta Yoha Eventos ou crie uma conta grátis.">
+  <meta name="theme-color" content="#4A0A14">
+  <link rel="icon" href="assets/img/favicon.png">
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Cinzel:wght@500;600&family=Inter:wght@400;500;600;700;800&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="css/styles.css">
+  <style>
+    .entrar { display: grid; grid-template-columns: minmax(0, 1fr) minmax(0, 1fr); min-height: calc(100vh - var(--header-h)); }
+    .entrar__foto { position: relative; overflow: hidden; background: var(--bordo-900); }
+    .entrar__foto > img { position: absolute; inset: 0; width: 100%; height: 100%; object-fit: cover; }
+    .entrar__foto::after { content: ""; position: absolute; inset: 0; background: linear-gradient(180deg, rgba(36,4,10,.2), rgba(36,4,10,.85)); }
+    .entrar__frase { position: absolute; left: 40px; right: 40px; bottom: 40px; z-index: 1; color: #fff; }
+    .entrar__frase img { width: 120px; margin-bottom: 14px; }
+    .entrar__frase p { max-width: 40ch; margin: 0; font-size: 1.05rem; color: rgba(255,255,255,.88); }
+    .entrar__form { display: grid; place-items: center; padding: 40px var(--gutter); background: #fff; }
+    .entrar__caixa { width: 100%; max-width: 420px; }
+    .separadores { display: grid; grid-template-columns: 1fr 1fr; background: var(--marfim); border-radius: 999px; padding: 4px; margin-bottom: 28px; }
+    .separadores button { border: 0; background: none; padding: 10px; border-radius: 999px; font-weight: 600; color: var(--tinta-2); }
+    .separadores button.activo { background: #fff; color: var(--bordo-800); box-shadow: var(--sombra); }
+    .entrar__f { display: grid; gap: 14px; }
+    .tipo-conta { display: grid; grid-template-columns: 1fr 1fr; gap: 8px; }
+    .tipo-conta label { border: 1px solid var(--linha); border-radius: var(--raio-sm); padding: 10px 12px; font-size: 0.88rem; cursor: pointer; }
+    .tipo-conta input { margin-right: 6px; accent-color: var(--bordo-800); }
+    .tipo-conta label:has(input:checked) { border-color: var(--bordo-800); background: var(--bordo-50); color: var(--bordo-800); }
+    @media (max-width: 860px) { .entrar { grid-template-columns: 1fr; } .entrar__foto { display: none; } }
+  </style>
+</head>
+<body>
+  <div id="site-cabecalho"></div>
+
+  <main class="entrar">
+    <div class="entrar__foto"><img id="entrar-foto" alt=""><div class="entrar__frase"><img src="assets/img/logo-dourado.png" alt="Yoha Eventos"><p>Organize o seu evento com os fornecedores certos e todas as ferramentas num só lugar.</p></div></div>
+    <div class="entrar__form">
+      <div class="entrar__caixa">
+        <div class="separadores" role="tablist">
+          <button type="button" role="tab" class="activo" data-sep="entrar" aria-selected="true">Entrar</button>
+          <button type="button" role="tab" data-sep="criar" aria-selected="false">Criar conta</button>
+        </div>
+
+        <form id="form-entrar" class="entrar__f" novalidate>
+          <h1 class="h2" style="font-size:1.7rem">Bem-vindo de volta</h1>
+          <p class="muted" style="margin:6px 0 20px">Entre para continuar a planear o seu evento.</p>
+          <label class="campo"><span>Email</span><input class="entrada" type="email" name="email" required autocomplete="email"></label>
+          <label class="campo"><span>Palavra-passe</span><input class="entrada" type="password" name="senha" required autocomplete="current-password"></label>
+          <a href="#" class="small" style="color:var(--bordo-700); font-weight:600; justify-self:end">Esqueceu a palavra-passe?</a>
+          <button class="btn btn--block" type="submit">Entrar</button>
+        </form>
+
+        <form id="form-criar" class="entrar__f" hidden novalidate>
+          <h1 class="h2" style="font-size:1.7rem">Crie a sua conta grátis</h1>
+          <p class="muted" style="margin:6px 0 20px">Acesso ao planeador, orçamento, convidados e mesas.</p>
+          <div class="campo"><span>Tipo de conta</span>
+            <div class="tipo-conta">
+              <label><input type="radio" name="perfil" value="cliente" checked> Vou organizar um evento</label>
+              <label><input type="radio" name="perfil" value="fornecedor"> Sou fornecedor</label>
+            </div>
+          </div>
+          <label class="campo"><span>Nome completo</span><input class="entrada" name="nome" required autocomplete="name"></label>
+          <label class="campo"><span>Email</span><input class="entrada" type="email" name="email" required autocomplete="email"></label>
+          <label class="campo"><span>Telefone</span><input class="entrada" type="tel" name="telefone" placeholder="+244" autocomplete="tel"></label>
+          <label class="campo"><span>Palavra-passe</span><input class="entrada" type="password" name="senha" required minlength="8" autocomplete="new-password" placeholder="Mínimo 8 caracteres"></label>
+          <button class="btn btn--block" type="submit">Criar conta</button>
+          <p class="muted small" style="margin:0; text-align:center">Ao criar conta aceita os <a href="#" style="text-decoration:underline">Termos</a> e a <a href="#" style="text-decoration:underline">Política de privacidade</a>.</p>
+        </form>
+      </div>
+    </div>
+  </main>
+
+  <div id="site-rodape"></div>
+
+  <script src="js/data.js"></script>
+  <script src="js/main.js"></script>
+  <script src="js/entrar.js"></script>
+</body>
+</html>

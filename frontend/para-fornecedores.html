@@ -1,0 +1,133 @@
+<!DOCTYPE html>
+<html lang="pt">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>Para Fornecedores — Yoha Eventos</title>
+  <meta name="description" content="Registe a sua empresa na Yoha Eventos e receba pedidos de orçamento de clientes em todo o país.">
+  <meta name="theme-color" content="#4A0A14">
+  <link rel="icon" href="assets/img/favicon.png">
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Cinzel:wght@500;600&family=Inter:wght@400;500;600;700;800&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="css/styles.css">
+  <style>
+    .planos { display: grid; grid-template-columns: repeat(3, minmax(0, 1fr)); gap: 16px; }
+    .plano { display: flex; flex-direction: column; padding: 28px; border-radius: var(--raio); background: #fff; border: 1px solid var(--linha); }
+    .plano--destaque { border: 2px solid var(--bordo-800); box-shadow: var(--sombra-forte); position: relative; }
+    .plano--destaque::before { content: "Mais escolhido"; position: absolute; top: -13px; left: 24px; background: var(--bordo-800); color: #fff; font-size: 0.78rem; font-weight: 600; padding: 4px 12px; border-radius: 999px; }
+    .plano small { font-size: 0.85rem; color: var(--cinza); }
+    .plano h3 { font-size: 1.3rem; margin: 4px 0 16px; }
+    .plano__preco { font-size: 2.1rem; font-weight: 800; letter-spacing: -0.03em; color: var(--tinta); }
+    .plano__preco span { font-size: 0.9rem; font-weight: 500; color: var(--cinza); letter-spacing: 0; }
+    .plano ul { list-style: none; padding: 0; margin: 20px 0 24px; flex: 1; display: grid; gap: 10px; align-content: start; }
+    .plano li { display: flex; gap: 10px; font-size: 0.93rem; color: var(--tinta-2); }
+    .plano li::before { content: ""; width: 18px; height: 18px; flex-shrink: 0; margin-top: 2px; border-radius: 50%; background: #E8F5EE url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 24 24' fill='none' stroke='%231F7A4D' stroke-width='3'%3E%3Cpath d='M6 12.5l4 4 8-8.5'/%3E%3C/svg%3E") center / 11px no-repeat; }
+    @media (max-width: 900px) { .planos { grid-template-columns: minmax(0, 1fr); } }
+    .registo { display: grid; grid-template-columns: minmax(0, 1fr) minmax(0, 1.2fr); gap: clamp(28px, 5vw, 64px); align-items: start; }
+    .registo form { display: grid; grid-template-columns: 1fr 1fr; gap: 14px; }
+    .registo .inteiro { grid-column: 1 / -1; }
+    @media (max-width: 900px) { .registo { grid-template-columns: minmax(0, 1fr); } }
+    @media (max-width: 520px) { .registo form { grid-template-columns: 1fr; } }
+  </style>
+</head>
+<body>
+  <div id="site-cabecalho"></div>
+
+  <main>
+    <section class="cabecalho-pagina">
+      <div class="container">
+        <nav class="migalhas" aria-label="Navegação estrutural"><a href="index.html">Início</a><span>/</span><span>Para fornecedores</span></nav>
+        <h1 class="h2">Faça crescer o seu negócio de eventos</h1>
+        <p class="lead">Apresente o seu trabalho a quem está a planear e receba pedidos de orçamento qualificados, em todo o país.</p>
+        <div style="margin-top: 24px; display:flex; gap:10px; flex-wrap:wrap"><a class="btn" href="#registo">Criar conta de fornecedor</a><a class="btn btn--linha" href="#planos">Ver planos</a></div>
+      </div>
+    </section>
+
+    <section class="seccao">
+      <div class="container">
+        <div class="passos revelar">
+          <div class="passo"><div class="passo__n">1</div><h3>Crie o seu perfil</h3><p>Fotografias, descrição, serviços e preços indicativos. Validamos cada empresa antes de publicar.</p></div>
+          <div class="passo"><div class="passo__n">2</div><h3>Receba pedidos</h3><p>Os clientes pedem orçamento com data, tipo de evento e nº de convidados — tudo o que precisa para responder.</p></div>
+          <div class="passo"><div class="passo__n">3</div><h3>Acompanhe resultados</h3><p>Veja visitas ao perfil, contactos por WhatsApp e pedidos recebidos no seu painel.</p></div>
+        </div>
+      </div>
+    </section>
+
+    <section class="seccao seccao--marfim" id="planos">
+      <div class="container">
+        <div class="seccao__topo revelar">
+          <div><span class="eyebrow">Planos</span><h2 class="h2">Escolha o seu plano</h2></div>
+        </div>
+        <div class="planos revelar">
+          <div class="plano">
+            <small>Essencial</small><h3>Básico</h3>
+            <div class="plano__preco">Grátis</div>
+            <ul><li>Perfil com até 6 fotografias</li><li>Pedidos de orçamento</li><li>Botão de WhatsApp</li><li>Presença numa categoria</li></ul>
+            <a class="btn btn--linha" href="#registo">Começar</a>
+          </div>
+          <div class="plano plano--destaque">
+            <small>Para crescer</small><h3>Profissional</h3>
+            <div class="plano__preco">25 000 <span>Kz / mês</span></div>
+            <ul><li>Galeria ilimitada e vídeo</li><li>Selo de fornecedor verificado</li><li>Estatísticas do perfil</li><li>Até três categorias</li><li>Prioridade nos resultados</li></ul>
+            <a class="btn" href="#registo">Escolher plano</a>
+          </div>
+          <div class="plano">
+            <small>Máxima visibilidade</small><h3>Destaque</h3>
+            <div class="plano__preco">60 000 <span>Kz / mês</span></div>
+            <ul><li>Tudo do plano Profissional</li><li>Destaque na página inicial</li><li>Campanhas nas redes sociais</li><li>Gestor de conta dedicado</li></ul>
+            <a class="btn btn--linha" href="#registo">Falar connosco</a>
+          </div>
+        </div>
+        <p class="muted small" style="margin-top: 18px">Valores de referência — ajuste-os em <code>para-fornecedores.html</code>.</p>
+      </div>
+    </section>
+
+    <section class="seccao" id="registo">
+      <div class="container registo">
+        <div class="revelar">
+          <span class="eyebrow">Registo</span>
+          <h2 class="h2">Registe a sua empresa</h2>
+          <p class="lead" style="margin-top: 20px">Preencha os dados e a nossa equipa entra em contacto em até dois dias úteis para activar o seu perfil.</p>
+        </div>
+        <form id="form-registo" class="revelar caixa-branca" novalidate>
+          <label class="campo inteiro"><span>Nome da empresa</span><input class="entrada" name="empresa" required></label>
+          <label class="campo"><span>Pessoa de contacto</span><input class="entrada" name="contacto" required autocomplete="name"></label>
+          <label class="campo"><span>Telefone / WhatsApp</span><input class="entrada" type="tel" name="telefone" required placeholder="+244"></label>
+          <label class="campo"><span>Email</span><input class="entrada" type="email" name="email" autocomplete="email"></label>
+          <label class="campo"><span>Província</span><select class="entrada" name="provincia" id="r-provincia"></select></label>
+          <label class="campo inteiro"><span>Categoria principal</span><select class="entrada" name="categoria" id="r-categoria"></select></label>
+          <label class="campo inteiro"><span>Fale-nos do seu trabalho</span><textarea class="entrada" name="descricao"></textarea></label>
+          <label class="inteiro" style="display:flex; gap:10px; align-items:center; font-size: 0.9rem; color: var(--tinta-2)">
+            <input class="caixa" type="checkbox" name="termos" required> Aceito os termos de utilização e a política de privacidade.
+          </label>
+          <div class="inteiro"><button class="btn btn--block" type="submit">Criar conta de fornecedor</button></div>
+        </form>
+      </div>
+    </section>
+  </main>
+
+  <div id="site-rodape"></div>
+
+  <script src="js/data.js"></script>
+  <script src="js/main.js"></script>
+  <script>
+    document.addEventListener("DOMContentLoaded", () => {
+      document.getElementById("r-provincia").innerHTML = PROVINCIAS.map((p) => `<option>${p}</option>`).join("");
+      document.getElementById("r-categoria").innerHTML = CATEGORIAS.map((c) => `<option value="${c.id}">${c.nome}</option>`).join("");
+      document.getElementById("form-registo").addEventListener("submit", (e) => {
+        e.preventDefault();
+        const f = e.target;
+        const d = Object.fromEntries(new FormData(f));
+        if (!d.empresa?.trim() || !d.contacto?.trim() || !d.telefone?.trim()) return mostrarAviso("Preencha o nome da empresa, o contacto e o telefone.");
+        if (!d.termos) return mostrarAviso("É necessário aceitar os termos para continuar.");
+        const regs = JSON.parse(localStorage.getItem("yoha_registos") || "[]");
+        regs.push({ ...d, criadoEm: new Date().toISOString() });
+        localStorage.setItem("yoha_registos", JSON.stringify(regs));
+        f.reset();
+        mostrarAviso("Registo recebido. Entraremos em contacto brevemente.");
+      });
+    });
+  </script>
+</body>
+</html>

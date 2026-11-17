@@ -1,0 +1,66 @@
+<!DOCTYPE html>
+<html lang="pt">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>Sobre nós — Yoha Eventos</title>
+  <meta name="description" content="A Yoha Eventos liga quem organiza eventos aos melhores fornecedores de Angola.">
+  <meta name="theme-color" content="#4A0A14">
+  <link rel="icon" href="assets/img/favicon.png">
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Cinzel:wght@500;600&family=Inter:wght@400;500;600;700;800&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="css/styles.css">
+  <style>
+    .sobre { display: grid; grid-template-columns: minmax(0, 1fr) minmax(0, 1fr); gap: clamp(28px, 5vw, 64px); align-items: center; }
+    .sobre__foto { width: 100%; aspect-ratio: 4 / 3; object-fit: cover; border-radius: var(--raio); }
+    @media (max-width: 860px) { .sobre { grid-template-columns: 1fr; } }
+  </style>
+</head>
+<body>
+  <div id="site-cabecalho"></div>
+
+  <main>
+    <section class="cabecalho-pagina">
+      <div class="container">
+        <nav class="migalhas" aria-label="Navegação estrutural"><a href="index.html">Início</a><span>/</span><span>Sobre nós</span></nav>
+        <h1 class="h2">Quem somos</h1>
+        <p class="lead">A Yoha Eventos nasceu para tornar mais simples a organização de eventos em Angola — ligando quem organiza aos fornecedores certos.</p>
+      </div>
+    </section>
+    <section class="seccao">
+      <div class="container sobre">
+        <img id="sobre-foto" alt="" class="sobre__foto">
+        <div>
+          <span class="eyebrow">A nossa missão</span>
+          <h2 class="h2">Eventos bem organizados, sem complicações</h2>
+          <p class="lead">Organizar um evento envolve dezenas de decisões, contactos e pagamentos. Reunimos tudo num só lugar: um diretório de fornecedores verificados e ferramentas práticas para planear, do orçamento à planta de mesas.</p>
+          <div class="numeros" style="grid-template-columns: repeat(2, 1fr); margin-top: 28px" id="sobre-numeros"></div>
+        </div>
+      </div>
+    </section>
+    <section class="seccao seccao--marfim">
+      <div class="container">
+        <div class="seccao__topo"><div><span class="eyebrow">Os nossos valores</span><h2 class="h2">O que nos orienta</h2></div></div>
+        <div class="passos">
+          <div class="passo"><div class="passo__n">1</div><h3>Confiança</h3><p>Validamos os fornecedores antes de os publicar e mostramos preços de referência claros.</p></div>
+          <div class="passo"><div class="passo__n">2</div><h3>Simplicidade</h3><p>Ferramentas fáceis de usar, no computador e no telemóvel, para qualquer tipo de evento.</p></div>
+          <div class="passo"><div class="passo__n">3</div><h3>Proximidade</h3><p>Uma plataforma pensada para Angola, com fornecedores em todas as províncias.</p></div>
+        </div>
+      </div>
+    </section>
+  </main>
+
+  <div id="site-rodape"></div>
+
+  <script src="js/data.js"></script>
+  <script src="js/main.js"></script>
+  <script>
+    document.addEventListener("DOMContentLoaded", () => {
+      document.getElementById("sobre-foto").src = foto(FOTOS.eventos.pedido, 1000);
+      document.getElementById("sobre-numeros").innerHTML = [[TIPOS_EVENTO.length, "Tipos de evento"], [CATEGORIAS.length, "Categorias"], [PROVINCIAS.length, "Províncias"], ["24/7", "Acesso ao painel"]]
+        .map(([n, t]) => `<div class="numero"><strong>${n}</strong><span>${t}</span></div>`).join("");
+    });
+  </script>
+</body>
+</html>
